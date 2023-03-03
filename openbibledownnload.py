@@ -46,3 +46,25 @@ class Download:
             try:
                 files = wget.download(url, out='zip_files')
                 print('Downloaded {}'.format(url))
+            except:
+                print('Could not retrieve {}'.format(url))
+
+        print('Finished downloading all files.')
+        print('Extracting files...')
+
+        for (path, folder, sound) in os.walk('zip_files'):
+            for file in sound:
+                with ZipFile(path + '/' + file, 'r') as zipObj:
+                    zipObj.extractall(path='raw_audio')
+                    print('Extracted {}.'.format(file))
+
+        print('Finished extracting files.')
+        print('Deleting zip files...')
+
+        shutil.rmtree('zip_files')
+		
+print('Downloading audio data.')
+dl = Download(lang='yo', bib='OBYO17')
+dl.download()
+
+print('Finished downloading data.')
